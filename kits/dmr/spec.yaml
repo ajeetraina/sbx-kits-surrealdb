@@ -1,0 +1,57 @@
+schemaVersion: "1"
+kind: mixin
+name: surrealdb
+displayName: SurrealDB (Docker Model Runner)
+description: "Adds an embedded, multi-model SurrealDB (documents, graph, and native vector search) plus the surrealdb Python SDK to any agent. Vector search is wired to a local Docker Model Runner embedder. No cloud credentials, no separate database server."
+
+network:
+  allowedDomains:
+    - pypi.org
+    - files.pythonhosted.org
+    - raw.githubusercontent.com
+    - github.com
+    - release-assets.githubusercontent.com
+
+environment:
+  variables:
+    OPENAI_BASE_URL: "http://host.docker.internal:12434/engines/v1"
+    OPENAI_API_KEY: "dmr"
+    SURREALDB_URL: "surrealkv:///home/agent/.surrealdb/data"
+    SURREALDB_NS: "sandbox"
+    SURREALDB_DB: "memory"
+    NO_PROXY: "localhost,127.0.0.1,host.docker.internal"
+    no_proxy: "localhost,127.0.0.1,host.docker.internal"
+
+commands:
+  install:
+    - command: "pip install --break-system-packages 'surrealdb==2.0.0' 'openai>=1.0'"
+      user: "1000"
+      description: "Install the SurrealDB Python SDK (embedded storage engines bundled) plus the OpenAI client for the DMR embedder"
+  initFiles:
+    - path: /home/agent/.surrealdb/config.json
+      mode: "0644"
+      onlyIfMissing: true
+      description: "SurrealDB connection + embedder config wired to Docker Model Runner"
+      content: |
+        {
+          "db": {
+            "url": "surrealkv:///home/agent/.surrealdb/data",
+            "namespace": "sandbox",
+            "database": "memory"
+          },
+          "embedder": {
+            "provider": "openai",
+            "model": "ai/mxbai-embed-large",
+            "base_url": "http://host.docker.internal:12434/engines/v1",
+            "api_key": "dmr",
+            "dims": 1024
+          }
+        }
+memory: |
+  ## SurrealDB (embedded, multi-model — Docker Model Runner)
+
+  The surrealdb Python SDK is installed with embedded storage engines, so a full
+  multi-model database (documents, graph, native vector search) runs in-process
+  with no server and no external database. On-disk store at ~/.surrealdb/data,
+  config at ~/.surrealdb/config.json. Vector search embeds text via the local
+  Docker Model Runner (ai/mxbai-embed-large, 1024-dim). Demos under ~/runbooks/.
