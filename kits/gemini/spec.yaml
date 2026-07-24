@@ -46,7 +46,7 @@ commands:
           }
         }
 memory: |
-  ## SurrealDB (embedded, multi-model — Gemini embedder)
+  ## SurrealDB (embedded, multi-model - Gemini embedder)
 
   The surrealdb Python SDK plus the google-genai SDK are installed. A full
   multi-model database (documents, graph, native vector search) runs in-process

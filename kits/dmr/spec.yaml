@@ -48,7 +48,7 @@ commands:
           }
         }
 memory: |
-  ## SurrealDB (embedded, multi-model — Docker Model Runner)
+  ## SurrealDB (embedded, multi-model - Docker Model Runner)
 
   The surrealdb Python SDK is installed with embedded storage engines, so a full
   multi-model database (documents, graph, native vector search) runs in-process

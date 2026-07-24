@@ -3,7 +3,7 @@
 
 Ships with the sbx-kits-surrealdb kit. Memory is stored in an embedded SurrealDB
 (on-disk surrealkv, no server) and retrieved with SurrealDB's *native* vector
-search — text is embedded with the local Docker Model Runner, the vector is
+search - text is embedded with the local Docker Model Runner, the vector is
 stored next to the text, and recall is a KNN query over an HNSW index. The chat
 reply also runs on the local Docker Model Runner, so it needs no cloud keys.
 

@@ -2,7 +2,7 @@ schemaVersion: "1"
 kind: mixin
 name: surrealdb
 displayName: SurrealDB (Docker Model Runner)
-description: "Adds an embedded, multi-model SurrealDB (documents, graph, and native vector search) plus the surrealdb Python SDK to any agent. Vector search is pre-wired to a local Docker Model Runner embedder — no cloud credentials, no separate database server."
+description: "Adds an embedded, multi-model SurrealDB (documents, graph, and native vector search) plus the surrealdb Python SDK to any agent. Vector search is pre-wired to a local Docker Model Runner embedder - no cloud credentials, no separate database server."
 
 network:
   allowedDomains:
@@ -52,7 +52,7 @@ memory: |
   ## SurrealDB (embedded, multi-model)
 
   The `surrealdb` Python SDK is installed with its embedded storage engines, so a
-  full multi-model database runs in-process — no server to start, no external
+  full multi-model database runs in-process - no server to start, no external
   database. An on-disk store persists at `~/.surrealdb/data` (surrealkv), and the
   connection + embedder config lives at `~/.surrealdb/config.json`.
 

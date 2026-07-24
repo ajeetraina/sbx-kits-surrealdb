@@ -2,7 +2,7 @@
 
 A standalone [Docker Sandboxes](https://docs.docker.com/ai/sandboxes/) kit
 (`kind: mixin`) that adds an embedded, multi-model [SurrealDB](https://surrealdb.com/)
-— documents, graph edges, and native vector search — plus the `surrealdb` Python
+- documents, graph edges, and native vector search - plus the `surrealdb` Python
 SDK to any sandbox agent. SurrealDB runs in-process (embedded storage engines
 ship with the SDK), so there is no server and no external database.
 

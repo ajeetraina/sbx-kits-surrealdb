@@ -2,14 +2,14 @@
 
 This is a standalone [Docker Sandboxes](https://docs.docker.com/ai/sandboxes/) kit
 (`kind: mixin`) that adds an embedded, multi-model [SurrealDB](https://surrealdb.com/)
-— documents, graph edges, and **native vector search** in one process — plus the
+- documents, graph edges, and **native vector search** in one process - plus the
 `surrealdb` Python SDK to any sandbox agent. Vector search is pre-wired to a local
 [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR) embedder.
 
 SurrealDB runs *inside* the sandbox: the SDK ships with its embedded storage
 engines, so there is no server to start and no external database. The store
 persists on disk at `~/.surrealdb/data` (surrealkv). One database gives an agent a
-document store, a graph, and a vector index at once — so semantic memory needs no
+document store, a graph, and a vector index at once - so semantic memory needs no
 separate vector database like Qdrant.
 
 DMR is the zero-config default for the embedder. It works with no cloud keys, but
@@ -35,11 +35,11 @@ docker model pull ai/gemma3              # chat model for the travel runbook
 docker model pull ai/mxbai-embed-large   # embedder (1024-dim)
 ```
 
-SurrealDB itself needs no pull — it's embedded in the Python SDK the kit installs.
+SurrealDB itself needs no pull - it's embedded in the Python SDK the kit installs.
 
 ### 2. Setting up the secret key (cloud embedders only)
 
-The DMR default needs no key — skip this step. You only set a secret when you swap
+The DMR default needs no key - skip this step. You only set a secret when you swap
 the embedder for a cloud provider (OpenAI or Gemini). Store it once with sbx's
 secret manager; the key is never baked into the kit, and the sbx proxy injects it
 into the sandbox at runtime (`sbx run` has no `-e` flag).
@@ -58,14 +58,14 @@ sbx secret ls
 
 ### 3. Launch the sandbox with the kit
 
-Layer the mixin onto an agent. Each embedder is published as its own image tag —
+Layer the mixin onto an agent. Each embedder is published as its own image tag -
 pick the one matching the secret you stored in step 2:
 
 ```console
-# DMR (default, no key needed) — :latest is the same as :dmr
+# DMR (default, no key needed) - :latest is the same as :dmr
 sbx run --kit docker.io/ajeetraina777/sbx-surrealdb-kits:latest claude
 
-# OpenAI — store the key and launch in one line
+# OpenAI - store the key and launch in one line
 sbx secret set -g openai && sbx run --kit docker.io/ajeetraina777/sbx-surrealdb-kits:openai claude
 
 # Gemini
@@ -88,7 +88,7 @@ sbx run --kit ./sbx-kits-surrealdb/ claude
 #### Choosing the agent
 
 The trailing argument (`claude` above) is the **coding agent** that runs inside
-the sandbox — a separate axis from the kit tag. The tag (`:dmr`, `:openai`,
+the sandbox - a separate axis from the kit tag. The tag (`:dmr`, `:openai`,
 `:gemini`) decides what SurrealDB's vector search uses for embeddings; the agent
 decides which assistant you interact with. Any supported agent pairs with any tag.
 
@@ -106,16 +106,16 @@ sbx secret set -g openai && sbx run --kit docker.io/ajeetraina777/sbx-surrealdb-
 ```
 
 Note that `gemini` here is an agent (Google's Gemini CLI), unrelated to the
-`:gemini` kit tag (SurrealDB's Gemini embedder) — they are independent choices.
+`:gemini` kit tag (SurrealDB's Gemini embedder) - they are independent choices.
 Arguments meant for the agent itself go after a `--` separator, e.g.
 `sbx run --kit ...:openai codex -- --help`.
 
 ### 4. Confirm the kit installed correctly
 
 Once you're in the sandbox's Claude session, use `!` shell escapes to prove the
-mixin is really inside. The kit does four observable things — installs
+mixin is really inside. The kit does four observable things - installs
 `surrealdb`, sets env vars, writes `~/.surrealdb/config.json`, and injects a memory
-note — so you can verify it on independent layers.
+note - so you can verify it on independent layers.
 
 **4a. The SDK is installed (the pinned version, with embedded engines):**
 
@@ -125,7 +125,7 @@ note — so you can verify it on independent layers.
 
 Expect `surrealdb 2.0.0` (the exact pin from this kit's `spec.yaml`).
 
-**4b. The mixin's env vars are present** — declared only in the kit's `spec.yaml`,
+**4b. The mixin's env vars are present** - declared only in the kit's `spec.yaml`,
 so they are a fingerprint that the kit (not a manual `pip install`) wired things
 up:
 
@@ -142,7 +142,7 @@ Expect `SURREALDB_URL=surrealkv:///home/agent/.surrealdb/data`,
 !cat /home/agent/.surrealdb/config.json
 ```
 
-**4d. End-to-end functional proof** — open the embedded database, write a record,
+**4d. End-to-end functional proof** - open the embedded database, write a record,
 and read it back. This exercises the SDK and the on-disk store in one shot:
 
 ```console
@@ -172,7 +172,7 @@ Expect a JSON list including `ai/gemma3` and `ai/mxbai-embed-large`.
 
 The kit ships runnable demos under `~/runbooks/`. They are plain files under
 [`files/home/runbooks/`](./files/home/runbooks/) in this repo (the
-[sbx-kits-contrib][contrib] `files/home/` convention — everything under it is
+[sbx-kits-contrib][contrib] `files/home/` convention - everything under it is
 mirrored into `/home/agent/`), **not** hard-coded into `spec.yaml`.
 
 `travel.py` is a travel assistant that remembers you across separate runs, using
@@ -183,14 +183,14 @@ SurrealDB's native vector search over a local-DMR embedding:
 !python3 ~/runbooks/travel.py "Plan my return leg."   # fresh process; it still knows you
 ```
 
-`graph.py` needs no embedder and no keys — it shows the multi-model side
+`graph.py` needs no embedder and no keys - it shows the multi-model side
 (documents linked by graph edges, traversed inline):
 
 ```console
 !python3 ~/runbooks/graph.py
 ```
 
-To add a runbook, drop a `*.py` in `files/home/runbooks/` — it ships
+To add a runbook, drop a `*.py` in `files/home/runbooks/` - it ships
 automatically, no `spec.yaml` change.
 
 ## Why SurrealDB for agent memory
@@ -198,10 +198,10 @@ automatically, no `spec.yaml` change.
 A vector store gives an agent recall by similarity. SurrealDB gives that **and**
 the structure around it, in one embedded database:
 
-- **Documents** — typed records for entities, preferences, and state.
-- **Graph** — `RELATE a->edge->b` with properties on the edge, traversed inline
+- **Documents** - typed records for entities, preferences, and state.
+- **Graph** - `RELATE a->edge->b` with properties on the edge, traversed inline
   (`->visited->city`). Relationships a pure vector store can't express.
-- **Native vector search** — an HNSW (or MTREE) index and a KNN operator
+- **Native vector search** - an HNSW (or MTREE) index and a KNN operator
   (`embedding <|K|> $vec`) with `vector::distance::knn()`, so semantic memory
   needs no separate vector database.
 

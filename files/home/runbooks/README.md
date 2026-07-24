@@ -21,7 +21,7 @@ by embedding the new question and running a KNN search over the stored vectors.
 
 ## graph.py
 
-A multi-model demo — no embedder, no keys. It builds a tiny travel knowledge
+A multi-model demo - no embedder, no keys. It builds a tiny travel knowledge
 graph (people and cities as documents, `visited` as graph edges) and traverses it
 inline in queries. This is the part of SurrealDB a plain vector store can't do.
 

@@ -1,6 +1,6 @@
 # Embedding providers for the SurrealDB kit
 
-SurrealDB is the database in every flavor of this kit — an embedded, multi-model
+SurrealDB is the database in every flavor of this kit - an embedded, multi-model
 store that gives you documents, graph edges, and **native vector search** in one
 process, with no server and no external vector database. What changes between the
 image tags is only the **embedder**: the model that turns text into the vectors
@@ -35,7 +35,7 @@ OpenAI and Gemini users can reuse a key they already have.
 2. **Changing dimensions needs a fresh index/table.** SurrealDB won't reinterpret
    an HNSW index built at one dimension as another. When you switch providers,
    either use a different `database` in the config (each provider tag already
-   does — `memory`, `memory_openai`, `memory_gemini`) or drop the old store:
+   does - `memory`, `memory_openai`, `memory_gemini`) or drop the old store:
    `rm -rf /home/agent/.surrealdb/data`.
 
 ## How to switch provider

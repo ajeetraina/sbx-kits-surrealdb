@@ -48,7 +48,7 @@ commands:
           }
         }
 memory: |
-  ## SurrealDB (embedded, multi-model — OpenAI embedder)
+  ## SurrealDB (embedded, multi-model - OpenAI embedder)
 
   The surrealdb Python SDK is installed with embedded storage engines, so a full
   multi-model database (documents, graph, native vector search) runs in-process

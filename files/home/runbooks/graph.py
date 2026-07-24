@@ -2,7 +2,7 @@
 """A tiny multi-model demo: documents + graph edges in one embedded SurrealDB.
 
 Ships with the sbx-kits-surrealdb kit. This one needs no embedder and no cloud
-keys — it shows the part of SurrealDB a pure vector store can't do: typed records
+keys - it shows the part of SurrealDB a pure vector store can't do: typed records
 linked by graph edges (`RELATE a->edge->b`) and traversed inline in a query
 (`->visited->city`).
 
