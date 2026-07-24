@@ -23,7 +23,6 @@ in-process and persists to `~/.surrealdb/data` (surrealkv), so the document, gra
 and vector store never leaves the machine. The only part that can reach out is
 embedding generation - and whether it does depends on the embedder tag you pick.
 
-### Default (`:dmr`) - fully on-host
 
 ![SurrealDB sbx kit architecture, DMR embedder](./docs/surrealdb_architecture_dmr.png)
 
@@ -31,15 +30,7 @@ With the default **`:dmr` tag** the embedder runs on the host via Docker Model
 Runner (`ai/mxbai-embed-large`). The whole memory loop - store, embed, query -
 stays on the machine and nothing crosses to external systems.
 
-### Swapped to `:openai` - embeddings cross out
 
-![SurrealDB sbx kit architecture, OpenAI embedder](./docs/surrealdb_architecture.png)
-
-With the **`:openai` tag**, embeddings are produced by OpenAI's
-`text-embedding-3-small`, routed through the sbx proxy (which injects the stored
-key). That call *does* cross to an external system, while the vector data itself
-still stays on-disk locally. The `:gemini` tag behaves the same way against
-Google's API.
 
 
 ## Prerequisites
