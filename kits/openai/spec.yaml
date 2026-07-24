@@ -1,0 +1,58 @@
+schemaVersion: "1"
+kind: mixin
+name: surrealdb
+displayName: SurrealDB (OpenAI embedder)
+description: "Adds an embedded, multi-model SurrealDB (documents, graph, and native vector search) plus the surrealdb Python SDK to any agent, with vector search embedded by OpenAI. Store the key with: sbx secret set -g openai (the kit holds no key)."
+
+network:
+  allowedDomains:
+    - pypi.org
+    - files.pythonhosted.org
+    - raw.githubusercontent.com
+    - github.com
+    - release-assets.githubusercontent.com
+    - api.openai.com
+
+environment:
+  variables:
+    OPENAI_BASE_URL: "https://api.openai.com/v1"
+    OPENAI_API_KEY: "placeholder"
+    SURREALDB_URL: "surrealkv:///home/agent/.surrealdb/data"
+    SURREALDB_NS: "sandbox"
+    SURREALDB_DB: "memory"
+    NO_PROXY: "localhost,127.0.0.1,host.docker.internal"
+    no_proxy: "localhost,127.0.0.1,host.docker.internal"
+
+commands:
+  install:
+    - command: "pip install --break-system-packages 'surrealdb==2.0.0' 'openai>=1.0'"
+      user: "1000"
+      description: "Install the SurrealDB Python SDK (embedded storage engines bundled) plus the OpenAI client"
+  initFiles:
+    - path: /home/agent/.surrealdb/config.json
+      mode: "0644"
+      onlyIfMissing: true
+      description: "SurrealDB connection + OpenAI embedder config; key injected by sbx secret"
+      content: |
+        {
+          "db": {
+            "url": "surrealkv:///home/agent/.surrealdb/data",
+            "namespace": "sandbox",
+            "database": "memory_openai"
+          },
+          "embedder": {
+            "provider": "openai",
+            "model": "text-embedding-3-small",
+            "base_url": "https://api.openai.com/v1",
+            "dims": 1536
+          }
+        }
+memory: |
+  ## SurrealDB (embedded, multi-model — OpenAI embedder)
+
+  The surrealdb Python SDK is installed with embedded storage engines, so a full
+  multi-model database (documents, graph, native vector search) runs in-process
+  with no server and no external database. Vector search embeds text via OpenAI
+  (text-embedding-3-small, 1536-dim). The API key is supplied by the sbx proxy
+  from the stored openai secret, so it is not present in the sandbox. On-disk
+  store at ~/.surrealdb/data, config at ~/.surrealdb/config.json.
